@@ -2,7 +2,7 @@
 # Quick Pay
 
 
-Quick Pay - QPay for short - is a Digital Banking app for Onboarding new customers and providing Services, built entirely with Compose Multiplatform. This project is considered a use case for unifying & providing financial services on both Android and iOS platforms while leveraging the power of Native.
+Quick Pay - QPay for short - is a simple use case for a Fintech app for Onboarding new customers and providing Services, built entirely with Compose Multiplatform. This cross-platform project is considered a use case for unifying & providing financial services on both Android and iOS platforms while leveraging the power of Native.
 
 ## Targeted Platforms For Now
 
