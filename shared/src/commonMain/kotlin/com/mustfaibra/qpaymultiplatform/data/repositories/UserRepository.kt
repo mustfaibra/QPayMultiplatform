@@ -90,4 +90,52 @@ object UserRepository {
 			)
 		)
 	}
+	
+	suspend fun checkUserAuthentication(
+		encryptedPhone: String,
+		encryptedPin: String,
+	): User? {
+		delay(2000)
+		return User(
+			id = "user_272627227",
+			username = "mustfaibra",
+			fName = "Mustafa",
+			lName = "Ibrahim",
+			token = "fjdfj22820wxw922772ksk",
+			balance = 350_000.0,
+			profile = User.getRandomProfile(),
+			cards = mutableListOf(
+				PaymentCard(
+					cardName = "ADIB",
+					cardNumber = "4532 5687 6543 9876",
+					cardHolderName = "Mustafa Ibrahim",
+					expirationMonth = Random.nextInt(1, 12),
+					expirationYear = Random.nextInt(23, 30),
+					cvv = "${Random.nextInt(100, 999)}",
+					color = Color(0xFF2196F3),
+					icon = SharedRes.images.ic_mastercard,
+				),
+				PaymentCard(
+					cardName = "Mashreq",
+					cardNumber = "9876 2345 6789 6011",
+					cardHolderName = "Mustafa Ibrahim",
+					expirationMonth = Random.nextInt(1, 12),
+					expirationYear = Random.nextInt(23, 30),
+					cvv = "${Random.nextInt(100, 999)}",
+					color = Color(0xFFFF9800),
+					icon = SharedRes.images.ic_visa,
+				),
+				PaymentCard(
+					cardName = "QPay",
+					cardNumber = "4916 1234 5678 4321",
+					cardHolderName = "Mustafa Ibrahim",
+					expirationMonth = Random.nextInt(1, 12),
+					expirationYear = Random.nextInt(23, 30),
+					cvv = "${Random.nextInt(100, 999)}",
+					color = Color(0xFF2b66d8),
+					icon = SharedRes.images.ic_paypal,
+				),
+			)
+		)
+	}
 }
