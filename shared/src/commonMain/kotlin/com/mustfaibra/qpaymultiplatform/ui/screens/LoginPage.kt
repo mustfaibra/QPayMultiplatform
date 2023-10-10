@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mustfaibra.qpaymultiplatform.SharedRes
@@ -113,7 +114,7 @@ fun LoginPage(
 					},
 					placeholder = {
 						Text(
-							text = "+971 ".plus(SharedRes.strings.phone_number.get()),
+							text = "971 ".plus(SharedRes.strings.phone_number.get()),
 							style = MaterialTheme.typography.bodySmall
 								.copy(fontWeight = FontWeight.Medium),
 							color = MaterialTheme.colorScheme.onBackground
@@ -170,6 +171,7 @@ fun LoginPage(
 						keyboardType = KeyboardType.NumberPassword,
 						imeAction = ImeAction.Done
 					),
+					visualTransformation = PasswordVisualTransformation(),
 					shape = MaterialTheme.shapes.medium,
 					colors = TextFieldDefaults.colors(
 						unfocusedContainerColor = MaterialTheme.colorScheme.surface,

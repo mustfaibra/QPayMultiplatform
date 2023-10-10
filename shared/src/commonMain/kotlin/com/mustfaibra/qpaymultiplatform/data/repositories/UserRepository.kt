@@ -95,7 +95,7 @@ object UserRepository {
 	suspend fun checkUserAuthentication(
 		encryptedPhone: String,
 		encryptedPin: String,
-	): User {
+	): User? {
 		delay(2000)
 		return me
 	}

@@ -21,7 +21,7 @@ class LoginViewModel : InstanceKeeper.Instance {
 	private val _uiState = MutableStateFlow<LoginUIState>(LoginUIState.Idle)
 	val uiState: StateFlow<LoginUIState> = _uiState
 	private val countryKey = "971"
-	private val _phone = mutableStateOf(countryKey)
+	private val _phone = mutableStateOf("")
 	val phone: State<String> = _phone
 	private val _pin = mutableStateOf("")
 	val pin: State<String> = _pin
@@ -56,14 +56,10 @@ class LoginViewModel : InstanceKeeper.Instance {
 	}
 	
 	fun updatePhone(phone: String) {
-		if (phone.length in countryKey.length..countryKey.length.plus(9)
-			&& phone.startsWith(countryKey)
-		) {
-			if (_uiState.value is LoginUIState.Error.Phone) {
-				_uiState.value = LoginUIState.Idle
-			}
-			_phone.value = phone
+		if (_uiState.value is LoginUIState.Error.Phone) {
+			_uiState.value = LoginUIState.Idle
 		}
+		_phone.value = phone
 	}
 	
 	fun updatePin(pin: String) {
