@@ -7,6 +7,7 @@ import com.mustfaibra.qpaymultiplatform.decompose.createaccount.SignInOptionsCom
 import com.mustfaibra.qpaymultiplatform.decompose.createauth.CreateAuthComponent
 import com.mustfaibra.qpaymultiplatform.decompose.home.HomeComponent
 import com.mustfaibra.qpaymultiplatform.decompose.identityverification.IdentityVerificationComponent
+import com.mustfaibra.qpaymultiplatform.decompose.login.LoginComponent
 import com.mustfaibra.qpaymultiplatform.decompose.nationalid.NationalIdComponent
 import com.mustfaibra.qpaymultiplatform.decompose.onboarding.OnboardingComponent
 import com.mustfaibra.qpaymultiplatform.decompose.phoneverification.PhoneVerificationComponent
@@ -32,6 +33,10 @@ interface QPayRoot {
 		
 		class SignInOptions(
 			val component: SignInOptionsComponent
+		) : DestinationChild()
+		
+		class Login(
+			val component: LoginComponent
 		) : DestinationChild()
 		
 		class ContactInfo(

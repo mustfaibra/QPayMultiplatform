@@ -25,7 +25,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -39,12 +38,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mustfaibra.qpaymultiplatform.SharedRes
-import com.mustfaibra.qpaymultiplatform.decompose.contactsinfo.ContactInfoComponent
-import com.mustfaibra.qpaymultiplatform.resources.LocalStringProvider
 import com.mustfaibra.qpaymultiplatform.ui.composables.CustomButton
 import com.mustfaibra.qpaymultiplatform.ui.composables.InteractionBlocker
 import com.mustfaibra.qpaymultiplatform.ui.composables.LogoBox
 import com.mustfaibra.qpaymultiplatform.ui.composables.ProcessTimeLine
+import com.mustfaibra.qpaymultiplatform.utils.get
 import com.mustfaibra.qpaymultiplatform.viewmodels.ContactsViewModel
 import dev.icerock.moko.resources.compose.painterResource
 
@@ -54,9 +52,6 @@ fun ContactPage(
 	viewModel: ContactsViewModel,
 	onOtpSent: () -> Unit,
 ) {
-	val stringsProvider = LocalStringProvider.current
-		?: throw IllegalStateException()
-	
 	val phone by remember { viewModel.phone }
 	val phoneInputError by remember { viewModel.phoneInputError }
 	val isLoading by remember { viewModel.isLoading }
@@ -108,7 +103,7 @@ fun ContactPage(
 						backgroundColor = MaterialTheme.colorScheme.surface,
 					)
 					Text(
-						text = stringsProvider.get(SharedRes.strings.app_name),
+						text = SharedRes.strings.app_name.get(),
 						style = MaterialTheme.typography.displayMedium
 							.copy(fontWeight = FontWeight.Medium),
 						color = MaterialTheme.colorScheme.onPrimary,
@@ -147,7 +142,7 @@ fun ContactPage(
 						},
 						placeholder = {
 							Text(
-								text = "+971 ".plus(stringsProvider.get(SharedRes.strings.phone_number)),
+								text = "+971 ".plus(SharedRes.strings.phone_number.get()),
 								style = MaterialTheme.typography.bodySmall
 									.copy(fontWeight = FontWeight.Medium),
 								color = MaterialTheme.colorScheme.onBackground
@@ -182,7 +177,7 @@ fun ContactPage(
 							else {
 								Text(
 									modifier = Modifier.padding(top = 16.dp),
-									text = stringsProvider.get(SharedRes.strings.you_will_receive_an_otp),
+									text = SharedRes.strings.you_will_receive_an_otp.get(),
 									style = MaterialTheme.typography.titleMedium
 										.copy(fontWeight = FontWeight.Normal),
 									color = MaterialTheme.colorScheme.onBackground,
@@ -195,7 +190,7 @@ fun ContactPage(
 					modifier = Modifier
 						.padding(top = 16.dp)
 						.fillMaxWidth(),
-					text = stringsProvider.get(SharedRes.strings.verify_phone_number),
+					text = SharedRes.strings.verify_phone_number.get(),
 					contentColor = MaterialTheme.colorScheme.onPrimary,
 					padding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
 					textStyle = MaterialTheme.typography.bodyMedium
@@ -226,7 +221,7 @@ fun ContactPage(
 						.clip(CircleShape)
 						.clickable { }
 						.padding(horizontal = 16.dp, vertical = 4.dp),
-					text = stringsProvider.get(SharedRes.strings.facing_any_issues),
+					text = SharedRes.strings.facing_any_issues.get(),
 					style = MaterialTheme.typography.titleLarge
 						.copy(fontWeight = FontWeight.Medium),
 					color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -240,7 +235,7 @@ fun ContactPage(
 					horizontalAlignment = Alignment.CenterHorizontally,
 				) {
 					Text(
-						text = stringsProvider.get(SharedRes.strings.by_continue_you_agree_terms),
+						text = SharedRes.strings.by_continue_you_agree_terms.get(),
 						style = MaterialTheme.typography.titleLarge
 							.copy(fontWeight = FontWeight.Normal),
 						color = MaterialTheme.colorScheme.onBackground,
@@ -254,7 +249,7 @@ fun ContactPage(
 							modifier = Modifier
 								.clip(CircleShape)
 								.clickable { },
-							text = stringsProvider.get(SharedRes.strings.terms_and_conditions),
+							text = SharedRes.strings.terms_and_conditions.get(),
 							style = MaterialTheme.typography.titleMedium
 								.copy(fontWeight = FontWeight.Bold),
 							color = MaterialTheme.colorScheme.onBackground,
@@ -269,7 +264,7 @@ fun ContactPage(
 							modifier = Modifier
 								.clip(CircleShape)
 								.clickable { },
-							text = stringsProvider.get(SharedRes.strings.privacy_and_policies),
+							text = SharedRes.strings.privacy_and_policies.get(),
 							style = MaterialTheme.typography.titleMedium
 								.copy(fontWeight = FontWeight.Bold),
 							color = MaterialTheme.colorScheme.onBackground,

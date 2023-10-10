@@ -75,7 +75,7 @@ fun SignInOptionsPage(
 				containerColor = MaterialTheme.colorScheme.onSurface,
 				contentColor = MaterialTheme.colorScheme.surface,
 				iconTint = MaterialTheme.colorScheme.surface,
-				onClick = {},
+				onClick = onSignToQpayAccount,
 			)
 			SignInWithButton(
 				modifier = Modifier
@@ -86,7 +86,7 @@ fun SignInOptionsPage(
 					.copy(fontWeight = FontWeight.Normal),
 				containerColor = MaterialTheme.colorScheme.onPrimary,
 				contentColor = MaterialTheme.colorScheme.onBackground,
-				onClick = onSignToQpayAccount,
+				onClick = {  },
 			)
 			SignInWithButton(
 				modifier = Modifier

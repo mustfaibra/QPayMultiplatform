@@ -24,6 +24,7 @@ import com.mustfaibra.qpaymultiplatform.ui.screens.ContactPage
 import com.mustfaibra.qpaymultiplatform.ui.screens.CreateAuthenticationPage
 import com.mustfaibra.qpaymultiplatform.ui.screens.HomePage
 import com.mustfaibra.qpaymultiplatform.ui.screens.IdentityVerificationPage
+import com.mustfaibra.qpaymultiplatform.ui.screens.LoginPage
 import com.mustfaibra.qpaymultiplatform.ui.screens.NationalIDCapturePage
 import com.mustfaibra.qpaymultiplatform.ui.screens.OnboardingPage
 import com.mustfaibra.qpaymultiplatform.ui.screens.PhoneVerificationPage
@@ -90,6 +91,18 @@ fun QPayApp(
 								},
 								onSignToQpayAccount = {
 									child.component.onSignInToAccountClicked()
+								}
+							)
+						}
+						
+						is QPayRoot.DestinationChild.Login -> {
+							LoginPage(
+								viewModel = child.component.loginViewModel,
+								onUserAuthenticated = {user, rememberMe ->
+									child.component.onAuthenticationSuccess(
+										user = user,
+										rememberMe = rememberMe,
+									)
 								}
 							)
 						}

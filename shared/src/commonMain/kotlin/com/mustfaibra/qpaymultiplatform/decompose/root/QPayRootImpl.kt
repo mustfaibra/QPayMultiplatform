@@ -14,6 +14,7 @@ import com.mustfaibra.qpaymultiplatform.decompose.createaccount.SignInOptionsCom
 import com.mustfaibra.qpaymultiplatform.decompose.createauth.CreateAuthComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.home.HomeComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.identityverification.IdentityVerificationComponentImpl
+import com.mustfaibra.qpaymultiplatform.decompose.login.LoginComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.nationalid.NationalIdComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.onboarding.OnboardingComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.phoneverification.PhoneVerificationComponentImpl
@@ -64,6 +65,12 @@ class QPayRootImpl(
 			
 			is Config.SignInOptions -> QPayRoot.DestinationChild.SignInOptions(
 				component = buildSignInOptionsComponent(
+					context = componentContext,
+				)
+			)
+			
+			is Config.Login -> QPayRoot.DestinationChild.Login(
+				component = buildLoginComponent(
 					context = componentContext,
 				)
 			)
@@ -144,7 +151,23 @@ class QPayRootImpl(
 				navigation.push(Config.ContactPage)
 			}
 		},
-		onSignInToAccount = {},
+		onSignInToAccount = {
+			mainDispatcher.launch {
+				navigation.push(Config.Login)
+			}
+		},
+	)
+	
+	private fun buildLoginComponent(
+		context: ComponentContext,
+	) = LoginComponentImpl(
+		componentContext = context,
+		onAuthenticated = { user, rememberMe ->
+			mainDispatcher.launch {
+				rootViewModel.updateLoggedUser(user = user)
+				navigation.replaceAll(Config.Home)
+			}
+		},
 	)
 	
 	private fun buildContactInfoComponent(
@@ -224,6 +247,9 @@ class QPayRootImpl(
 		
 		@Parcelize
 		data object SignInOptions : Config()
+		
+		@Parcelize
+		data object Login : Config()
 		
 		@Parcelize
 		data object ContactPage : Config()

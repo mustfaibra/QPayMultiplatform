@@ -20,6 +20,7 @@ fun LogoBox(
 	icon: Painter,
 	logoSize: Dp = 36.dp,
 	backgroundColor: Color = MaterialTheme.colorScheme.onPrimary,
+	iconColor: Color = MaterialTheme.colorScheme.primary,
 ) {
 	Box(
 		modifier = Modifier
@@ -30,7 +31,7 @@ fun LogoBox(
 		Icon(
 			painter = icon,
 			contentDescription = null,
-			tint = MaterialTheme.colorScheme.primary,
+			tint = iconColor,
 			modifier = Modifier.size(logoSize),
 		)
 	}

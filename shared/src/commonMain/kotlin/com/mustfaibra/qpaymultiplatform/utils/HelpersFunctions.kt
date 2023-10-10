@@ -35,3 +35,11 @@ fun LocalDateTime.formatToReadableDate(): String {
 		this.time.toString().replaceAfter(".", "").replace(".", "")
 	}"
 }
+
+fun validatePhone(phone: String): Boolean {
+	return phone.isNotBlank() && phone.length == 12 && phone.startsWith("971")
+}
+
+fun validatePin(pin: String): Boolean {
+	return pin.isNotBlank() && pin.length == 4
+}
