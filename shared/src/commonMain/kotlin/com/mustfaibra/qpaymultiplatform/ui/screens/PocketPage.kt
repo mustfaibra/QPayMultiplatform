@@ -1,5 +1,8 @@
 package com.mustfaibra.qpaymultiplatform.ui.screens
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +29,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import com.mustfaibra.qpaymultiplatform.SharedRes
 import com.mustfaibra.qpaymultiplatform.data.entity.LocalUser
 import com.mustfaibra.qpaymultiplatform.data.entity.Pocket
+import com.mustfaibra.qpaymultiplatform.ui.composables.AnimatedMoneyCounter
 import com.mustfaibra.qpaymultiplatform.ui.composables.QPayIcon
 import com.mustfaibra.qpaymultiplatform.ui.composables.QPayOutlineButton
 import com.mustfaibra.qpaymultiplatform.ui.composables.SectionWithHeader
@@ -51,8 +58,11 @@ import dev.icerock.moko.resources.compose.painterResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PocketPage(viewModel: PocketViewModel) {
+	val user = LocalUser.current
 	val pocketsUiState by remember { viewModel.uiState }
 	val scaffoldState = rememberBottomSheetScaffoldState()
+	
+	require(user != null)
 	
 	BoxWithConstraints(
 		modifier = Modifier
@@ -74,9 +84,8 @@ fun PocketPage(viewModel: PocketViewModel) {
 				modifier = Modifier
 					.fillMaxWidth(),
 			) {
-				val user = LocalUser.current
 				TopHeader(
-					name = "${user?.fName} ${user?.lName}",
+					name = "${user.fName} ${user.lName}",
 					profileImage = painterResource(LocalUser.current?.profile ?: SharedRes.images.dreadlocked_man),
 					onProfileClicked = {
 					
@@ -99,17 +108,17 @@ fun PocketPage(viewModel: PocketViewModel) {
 						.padding(24.dp),
 					horizontalAlignment = Alignment.Start,
 				) {
-					Text(
-						text = SharedRes.strings.sar_x.get(370_000.0),
-						style = MaterialTheme.typography.displaySmall,
-						color = MaterialTheme.colorScheme.onPrimary,
+					AnimatedMoneyCounter(
+						target = user.balance,
+						textStyle = MaterialTheme.typography.displaySmall
+							.copy(color = MaterialTheme.colorScheme.onPrimary)
 					)
 					Spacer(modifier = Modifier.padding(4.dp))
 					Text(
 						text = SharedRes.strings.pocket_message_subtitle.get(),
-						style = MaterialTheme.typography.labelSmall,
+						style = MaterialTheme.typography.titleMedium,
 						color = MaterialTheme.colorScheme.onPrimary,
-						lineHeight = 18.sp,
+						lineHeight = 24.sp,
 					)
 				}
 			}
@@ -279,8 +288,8 @@ fun PocketItemUI(pocket: Pocket, onClicked: () -> Unit) {
 			modifier = Modifier
 				.clip(CircleShape)
 				.background(pocket.color.copy(alpha = 0.5f))
-				.padding(PaddingValues(8.dp))
-				.size(24.dp),
+				.padding(PaddingValues(10.dp))
+				.size(28.dp),
 			tint = Color.Unspecified,
 		)
 		Column(
@@ -289,7 +298,7 @@ fun PocketItemUI(pocket: Pocket, onClicked: () -> Unit) {
 		) {
 			Row(
 				modifier = Modifier.fillMaxWidth(),
-				verticalAlignment = Alignment.CenterVertically,
+				verticalAlignment = Alignment.Top,
 				horizontalArrangement = Arrangement.SpaceBetween,
 			) {
 				Column(
@@ -306,20 +315,46 @@ fun PocketItemUI(pocket: Pocket, onClicked: () -> Unit) {
 						style = MaterialTheme.typography.labelSmall,
 					)
 				}
-				Text(
-					text = SharedRes.strings.sar_x.get(pocket.goalToReach.toInt()),
-					style = MaterialTheme.typography.titleLarge
-						.copy(fontWeight = FontWeight.SemiBold),
+				AnimatedMoneyCounter(
+					target = pocket.goalToReach,
 				)
 			}
 			Spacer(modifier = Modifier.height(8.dp))
-			LinearProgressIndicator(
-				modifier = Modifier.fillMaxWidth(),
-				trackColor = pocket.color.copy(alpha = 0.2f),
+			AnimatedLinearProgress(
 				color = pocket.color,
+				trackColor = pocket.color.copy(alpha = 0.2f),
 				progress = pocket.currentSaving.div(pocket.goalToReach).toFloat(),
-				strokeCap = StrokeCap.Round,
 			)
 		}
+	}
+}
+
+@Composable
+fun AnimatedLinearProgress(
+	color: Color,
+	trackColor: Color,
+	progress: Float,
+) {
+	var progressState by remember { mutableStateOf(0f) }
+	val animatedProgress by animateFloatAsState(
+		targetValue = progressState,
+		animationSpec = TweenSpec(
+			durationMillis = 4000,
+			easing = LinearEasing,
+		)
+	)
+	LinearProgressIndicator(
+		modifier = Modifier
+			.fillMaxWidth()
+			.height(6.dp),
+		color = color,
+		trackColor = trackColor,
+		progress = animatedProgress,
+		strokeCap = StrokeCap.Round,
+	)
+	
+	// The fire the animation
+	SideEffect {
+		progressState = progress
 	}
 }

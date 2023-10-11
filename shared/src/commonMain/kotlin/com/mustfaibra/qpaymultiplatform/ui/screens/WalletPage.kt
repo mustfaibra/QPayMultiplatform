@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mustfaibra.qpaymultiplatform.SharedRes
 import com.mustfaibra.qpaymultiplatform.data.entity.LocalUser
+import com.mustfaibra.qpaymultiplatform.ui.composables.AnimatedMoneyCounter
 import com.mustfaibra.qpaymultiplatform.ui.composables.QPayIcon
 import com.mustfaibra.qpaymultiplatform.ui.composables.QPayOutlineButton
 import com.mustfaibra.qpaymultiplatform.ui.composables.SectionWithHeader
@@ -84,7 +85,7 @@ fun WalletPage(
 		item {
 			Column(
 				modifier = Modifier.padding(24.dp),
-				horizontalAlignment = Alignment.CenterHorizontally,
+				horizontalAlignment = Alignment.Start,
 			) {
 				Text(
 					text = SharedRes.strings.available_balance.get(),
@@ -92,28 +93,29 @@ fun WalletPage(
 					color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
 				)
 				Spacer(modifier = Modifier.padding(4.dp))
-				Text(
-					text = SharedRes.strings.sar_x.get(user.balance),
-					style = MaterialTheme.typography.displaySmall,
-					color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+				AnimatedMoneyCounter(
+					target = user.balance,
+					textStyle = MaterialTheme.typography.displaySmall
+						.copy(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f))
 				)
 				Row(
 					modifier = Modifier
 						.fillMaxWidth()
 						.padding(top = 24.dp),
 					verticalAlignment = Alignment.CenterVertically,
-					horizontalArrangement = Arrangement.Center,
 				) {
 					QPayOutlineButton(
+						modifier = Modifier.weight(1f),
 						text = SharedRes.strings.top_up.get(),
-						textStyle = MaterialTheme.typography.titleMedium,
+						textStyle = MaterialTheme.typography.titleLarge,
 					) {
 					
 					}
 					Spacer(modifier = Modifier.width(24.dp))
 					QPayOutlineButton(
+						modifier = Modifier.weight(1f),
 						text = SharedRes.strings.withdraw.get(),
-						textStyle = MaterialTheme.typography.titleMedium,
+						textStyle = MaterialTheme.typography.titleLarge,
 					) {
 					
 					}

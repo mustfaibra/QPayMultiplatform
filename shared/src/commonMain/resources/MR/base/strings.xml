@@ -71,7 +71,7 @@
     <string name="last_6_months">Last 6 months</string>
     <string name="last_9_months">Last 9 months</string>
     <string name="last_year">Last Year</string>
-    <string name="sar_x">SAR %1$s</string>
+    <string name="sar_x">AED %1$s</string>
     <string name="add_money">Add money</string>
     <string name="send_money">Send money</string>
     <string name="request_money">Request money</string>
