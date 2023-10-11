@@ -44,6 +44,7 @@ import com.mustfaibra.qpaymultiplatform.SharedRes
 import com.mustfaibra.qpaymultiplatform.data.entity.ActivityFilter
 import com.mustfaibra.qpaymultiplatform.data.entity.LocalUser
 import com.mustfaibra.qpaymultiplatform.data.entity.User
+import com.mustfaibra.qpaymultiplatform.ui.composables.AnimatedMoneyCounter
 import com.mustfaibra.qpaymultiplatform.ui.composables.BeneficiariesRowList
 import com.mustfaibra.qpaymultiplatform.ui.composables.InteractionBlocker
 import com.mustfaibra.qpaymultiplatform.ui.composables.QPayIcon
@@ -127,8 +128,9 @@ fun HomePage(
 			)
 			// Available Balance
 			Column(
-				modifier = Modifier.padding(24.dp),
-				horizontalAlignment = Alignment.CenterHorizontally,
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(24.dp),
 			) {
 				Text(
 					text = SharedRes.strings.available_balance.get(),
@@ -136,10 +138,10 @@ fun HomePage(
 					color = MaterialTheme.colorScheme.onPrimary,
 				)
 				Spacer(modifier = Modifier.padding(4.dp))
-				Text(
-					text = SharedRes.strings.sar_x.get(user.balance),
-					style = MaterialTheme.typography.displaySmall,
-					color = MaterialTheme.colorScheme.onPrimary,
+				AnimatedMoneyCounter(
+					target = user.balance,
+					textStyle = MaterialTheme.typography.displaySmall
+						.copy(MaterialTheme.colorScheme.onPrimary),
 				)
 			}
 			// Shortcuts

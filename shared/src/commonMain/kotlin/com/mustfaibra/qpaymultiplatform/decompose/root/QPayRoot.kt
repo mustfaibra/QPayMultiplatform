@@ -2,10 +2,10 @@ package com.mustfaibra.qpaymultiplatform.decompose.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import com.mustfaibra.qpaymultiplatform.decompose.bottomnavholder.BottomNavComponent
 import com.mustfaibra.qpaymultiplatform.decompose.contactsinfo.ContactInfoComponent
 import com.mustfaibra.qpaymultiplatform.decompose.createaccount.SignInOptionsComponent
 import com.mustfaibra.qpaymultiplatform.decompose.createauth.CreateAuthComponent
-import com.mustfaibra.qpaymultiplatform.decompose.home.HomeComponent
 import com.mustfaibra.qpaymultiplatform.decompose.identityverification.IdentityVerificationComponent
 import com.mustfaibra.qpaymultiplatform.decompose.login.LoginComponent
 import com.mustfaibra.qpaymultiplatform.decompose.nationalid.NationalIdComponent
@@ -18,50 +18,49 @@ import org.koin.core.KoinApplication
 
 interface QPayRoot {
 	val stringProvider: StringsProvider
-	val backstack: Value<ChildStack<*, DestinationChild>>
+	val backstack: Value<ChildStack<*, MainDestinationChild>>
 	val koinApplication: KoinApplication
 	val rootViewModel: RootViewModel
 	
-	sealed class DestinationChild {
+	sealed class MainDestinationChild {
 		class Splash(
 			val component: SplashComponent,
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
 		class Onboarding(
 			val component: OnboardingComponent,
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
 		class SignInOptions(
 			val component: SignInOptionsComponent
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
 		class Login(
 			val component: LoginComponent
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
 		class ContactInfo(
 			val component: ContactInfoComponent,
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
 		class PhoneVerification(
 			val component: PhoneVerificationComponent,
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
 		class NationalIdCapture(
 			val component: NationalIdComponent,
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
 		class IdentifyVerification(
 			val component: IdentityVerificationComponent,
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
 		class CreateAuthenticationPin(
 			val component: CreateAuthComponent,
-		) : DestinationChild()
+		) : MainDestinationChild()
 		
-		class Home(
-			val component: HomeComponent,
-		) : DestinationChild()
-		
+		class BottomNavHolder(
+			val component: BottomNavComponent,
+		) : MainDestinationChild()
 	}
 }

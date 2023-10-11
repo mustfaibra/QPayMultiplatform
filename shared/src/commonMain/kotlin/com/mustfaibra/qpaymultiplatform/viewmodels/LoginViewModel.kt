@@ -20,10 +20,9 @@ class LoginViewModel : InstanceKeeper.Instance {
 	private val viewModelScope = CoroutineScope(Dispatchers.Unconfined)
 	private val _uiState = MutableStateFlow<LoginUIState>(LoginUIState.Idle)
 	val uiState: StateFlow<LoginUIState> = _uiState
-	private val countryKey = "971"
-	private val _phone = mutableStateOf("")
+	private val _phone = mutableStateOf("971123456987")
 	val phone: State<String> = _phone
-	private val _pin = mutableStateOf("")
+	private val _pin = mutableStateOf("0000")
 	val pin: State<String> = _pin
 	
 	fun authenticateUser(phone: String, pin: String) {

@@ -9,10 +9,10 @@ import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import com.mustfaibra.qpaymultiplatform.decompose.bottomnavholder.BottomNavComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.contactsinfo.ContactInfoComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.createaccount.SignInOptionsComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.createauth.CreateAuthComponentImpl
-import com.mustfaibra.qpaymultiplatform.decompose.home.HomeComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.identityverification.IdentityVerificationComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.login.LoginComponentImpl
 import com.mustfaibra.qpaymultiplatform.decompose.nationalid.NationalIdComponentImpl
@@ -35,78 +35,77 @@ class QPayRootImpl(
 	override val rootViewModel: RootViewModel
 		get() = instanceKeeper.getOrCreate { RootViewModel() }
 	
-	private val navigation = StackNavigation<Config>()
+	private val navigation = StackNavigation<MainNavigationConfig>()
 	private val _backstack = this.childStack(
 		source = navigation,
-		initialConfiguration = Config.Splash,
+		initialConfiguration = MainNavigationConfig.Splash,
 		handleBackButton = true,
 	) { config, context ->
 		createChildFactory(
-			config = config,
-			componentContext = context
+			config = config, componentContext = context
 		)
 	}
 	override val backstack = _backstack
 	
 	private fun createChildFactory(
-		config: Config,
+		config: MainNavigationConfig,
 		componentContext: ComponentContext,
-	): QPayRoot.DestinationChild {
+	): QPayRoot.MainDestinationChild {
 		return when (config) {
-			is Config.Splash -> QPayRoot.DestinationChild.Splash(
+			is MainNavigationConfig.Splash -> QPayRoot.MainDestinationChild.Splash(
 				component = buildSplashComponent(context = componentContext)
 			)
 			
-			is Config.Onboarding -> QPayRoot.DestinationChild.Onboarding(
+			is MainNavigationConfig.Onboarding -> QPayRoot.MainDestinationChild.Onboarding(
 				component = buildOnboardingComponent(
 					context = componentContext,
 				)
 			)
 			
-			is Config.SignInOptions -> QPayRoot.DestinationChild.SignInOptions(
+			is MainNavigationConfig.SignInOptions -> QPayRoot.MainDestinationChild.SignInOptions(
 				component = buildSignInOptionsComponent(
 					context = componentContext,
 				)
 			)
 			
-			is Config.Login -> QPayRoot.DestinationChild.Login(
+			is MainNavigationConfig.Login -> QPayRoot.MainDestinationChild.Login(
 				component = buildLoginComponent(
 					context = componentContext,
 				)
 			)
 			
-			is Config.ContactPage -> QPayRoot.DestinationChild.ContactInfo(
+			is MainNavigationConfig.ContactPage -> QPayRoot.MainDestinationChild.ContactInfo(
 				component = buildContactInfoComponent(
 					context = componentContext,
 				)
 			)
 			
-			is Config.PhoneVerification -> QPayRoot.DestinationChild.PhoneVerification(
+			is MainNavigationConfig.PhoneVerification -> QPayRoot.MainDestinationChild.PhoneVerification(
 				component = buildPhoneVerificationComponent(
 					context = componentContext,
 				)
 			)
 			
-			is Config.NationalIDCapture -> QPayRoot.DestinationChild.NationalIdCapture(
+			is MainNavigationConfig.NationalIDCapture -> QPayRoot.MainDestinationChild.NationalIdCapture(
 				component = buildNationalIDComponent(
 					context = componentContext,
 				)
 			)
 			
-			is Config.IdentityVerification -> QPayRoot.DestinationChild.IdentifyVerification(
+			is MainNavigationConfig.IdentityVerification -> QPayRoot.MainDestinationChild.IdentifyVerification(
 				component = buildIdentityVerificationComponent(
 					context = componentContext,
 				)
 			)
 			
-			is Config.CreateAuthentication -> QPayRoot.DestinationChild.CreateAuthenticationPin(
+			is MainNavigationConfig.CreateAuthentication -> QPayRoot.MainDestinationChild.CreateAuthenticationPin(
 				component = buildCreateAuthComponent(
 					context = componentContext,
 				)
 			)
 			
-			is Config.Home -> QPayRoot.DestinationChild.Home(
-				component = buildHomeComponent(
+			is MainNavigationConfig.BottomNavHolder -> QPayRoot.MainDestinationChild.BottomNavHolder(
+				component = buildBottomNavComponent(
 					context = componentContext,
 				)
 			)
@@ -117,30 +116,25 @@ class QPayRootImpl(
 	
 	private fun buildSplashComponent(
 		context: ComponentContext
-	) = SplashComponentImpl(
-		componentContext = context,
+	) = SplashComponentImpl(componentContext = context,
 		onSplashTimeFinished = { isOnboardedBefore ->
 			mainDispatcher.launch {
 				if (isOnboardedBefore) {
-					navigation.replaceCurrent(configuration = Config.SignInOptions)
+					navigation.replaceCurrent(configuration = MainNavigationConfig.SignInOptions)
 				}
 				else {
-					navigation.replaceCurrent(configuration = Config.Onboarding)
+					navigation.replaceCurrent(configuration = MainNavigationConfig.Onboarding)
 				}
 			}
-		}
-	)
+		})
 	
 	private fun buildOnboardingComponent(
 		context: ComponentContext,
-	) = OnboardingComponentImpl(
-		componentContext = context,
-		onOnboardingFinished = {
-			mainDispatcher.launch {
-				navigation.replaceCurrent(Config.SignInOptions)
-			}
+	) = OnboardingComponentImpl(componentContext = context, onOnboardingFinished = {
+		mainDispatcher.launch {
+			navigation.replaceCurrent(MainNavigationConfig.SignInOptions)
 		}
-	)
+	})
 	
 	private fun buildSignInOptionsComponent(
 		context: ComponentContext,
@@ -148,12 +142,12 @@ class QPayRootImpl(
 		componentContext = context,
 		onCreateAccount = {
 			mainDispatcher.launch {
-				navigation.push(Config.ContactPage)
+				navigation.push(MainNavigationConfig.ContactPage)
 			}
 		},
 		onSignInToAccount = {
 			mainDispatcher.launch {
-				navigation.push(Config.Login)
+				navigation.push(MainNavigationConfig.Login)
 			}
 		},
 	)
@@ -165,123 +159,100 @@ class QPayRootImpl(
 		onAuthenticated = { user, rememberMe ->
 			mainDispatcher.launch {
 				rootViewModel.updateLoggedUser(user = user)
-				navigation.replaceAll(Config.Home)
+				navigation.replaceAll(MainNavigationConfig.BottomNavHolder)
 			}
 		},
 	)
 	
 	private fun buildContactInfoComponent(
 		context: ComponentContext,
-	) = ContactInfoComponentImpl(
-		componentContext = context,
-		onOtpSentToUser = {
-			mainDispatcher.launch {
-				navigation.push(Config.PhoneVerification)
-			}
+	) = ContactInfoComponentImpl(componentContext = context, onOtpSentToUser = {
+		mainDispatcher.launch {
+			navigation.push(MainNavigationConfig.PhoneVerification)
 		}
-	)
+	})
 	
 	private fun buildPhoneVerificationComponent(
 		context: ComponentContext,
-	) = PhoneVerificationComponentImpl(
-		componentContext = context,
+	) = PhoneVerificationComponentImpl(componentContext = context,
 		onVerifiedSuccessfully = {
 			mainDispatcher.launch {
-				navigation.push(Config.NationalIDCapture)
+				navigation.push(MainNavigationConfig.NationalIDCapture)
 			}
-		}
-	)
+		})
 	
 	private fun buildNationalIDComponent(
 		context: ComponentContext,
-	) = NationalIdComponentImpl(
-		componentContext = context,
+	) = NationalIdComponentImpl(componentContext = context,
 		onNationalIdCaptured = { front, back ->
 			mainDispatcher.launch {
-				navigation.push(Config.IdentityVerification)
+				navigation.push(MainNavigationConfig.IdentityVerification)
 			}
-		}
-	)
+		})
 	
 	private fun buildIdentityVerificationComponent(
 		context: ComponentContext,
-	) = IdentityVerificationComponentImpl(
-		componentContext = context,
+	) = IdentityVerificationComponentImpl(componentContext = context,
 		onStatusBarColorChange = {},
 		onIdentityVerifiedSuccessfully = {
 			mainDispatcher.launch {
-				navigation.push(Config.CreateAuthentication)
+				navigation.push(MainNavigationConfig.CreateAuthentication)
 			}
-		}
-	)
+		})
 	
 	private fun buildCreateAuthComponent(
 		context: ComponentContext,
-	) = CreateAuthComponentImpl(
-		componentContext = context,
+	) = CreateAuthComponentImpl(componentContext = context,
 		onAuthenticationCreated = { user ->
 			mainDispatcher.launch {
 				rootViewModel.updateLoggedUser(user = user)
-				navigation.replaceAll(Config.Home)
+				navigation.replaceAll(MainNavigationConfig.BottomNavHolder)
 			}
-		}
-	)
+		})
 	
-	private fun buildHomeComponent(
+	private fun buildBottomNavComponent(
 		context: ComponentContext,
-	) = HomeComponentImpl(
+	) = BottomNavComponentImpl(
 		componentContext = context,
-		onOpenSendMoney = {
+		onNavigateToMainChildRequested = { config ->
 			mainDispatcher.launch {
-				navigation.push(Config.SendMoney)
+				navigation.push(config)
 			}
-		}
+		},
 	)
 	
-	sealed class Config : Parcelable {
+	sealed class MainNavigationConfig : Parcelable {
 		@Parcelize
-		data object Splash : Config()
+		data object Splash : MainNavigationConfig()
 		
 		@Parcelize
-		data object Onboarding : Config()
+		data object Onboarding : MainNavigationConfig()
 		
 		@Parcelize
-		data object SignInOptions : Config()
+		data object SignInOptions : MainNavigationConfig()
 		
 		@Parcelize
-		data object Login : Config()
+		data object Login : MainNavigationConfig()
 		
 		@Parcelize
-		data object ContactPage : Config()
+		data object ContactPage : MainNavigationConfig()
 		
 		@Parcelize
-		data object PhoneVerification : Config()
+		data object PhoneVerification : MainNavigationConfig()
 		
 		@Parcelize
-		data object NationalIDCapture : Config()
+		data object NationalIDCapture : MainNavigationConfig()
 		
 		@Parcelize
-		data object IdentityVerification : Config()
+		data object IdentityVerification : MainNavigationConfig()
 		
 		@Parcelize
-		data object CreateAuthentication : Config()
+		data object CreateAuthentication : MainNavigationConfig()
 		
 		@Parcelize
-		data object Home : Config()
+		data object BottomNavHolder : MainNavigationConfig()
 		
 		@Parcelize
-		data object Wallet : Config()
-		
-		@Parcelize
-		data object QrCodePay : Config()
-		
-		@Parcelize
-		data object Pocket : Config()
-		
-		@Parcelize
-		data object Profile : Config()
-		
-		@Parcelize
-		data object SendMoney : Config()
+		data object SendMoney : MainNavigationConfig()
 	}
 }

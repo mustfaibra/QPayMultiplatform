@@ -20,9 +20,9 @@ import com.mustfaibra.qpaymultiplatform.data.entity.LocalUser
 import com.mustfaibra.qpaymultiplatform.decompose.root.QPayRoot
 import com.mustfaibra.qpaymultiplatform.koin.LocalKoinApplication
 import com.mustfaibra.qpaymultiplatform.resources.LocalStringProvider
+import com.mustfaibra.qpaymultiplatform.ui.screens.BottomNavPage
 import com.mustfaibra.qpaymultiplatform.ui.screens.ContactPage
 import com.mustfaibra.qpaymultiplatform.ui.screens.CreateAuthenticationPage
-import com.mustfaibra.qpaymultiplatform.ui.screens.HomePage
 import com.mustfaibra.qpaymultiplatform.ui.screens.IdentityVerificationPage
 import com.mustfaibra.qpaymultiplatform.ui.screens.LoginPage
 import com.mustfaibra.qpaymultiplatform.ui.screens.NationalIDCapturePage
@@ -39,7 +39,7 @@ fun QPayApp(
 	val windowsInsets = rememberWindowInsetsController()
 	val user by root.rootViewModel.user.collectAsState()
 	
-	LaunchedEffect(Unit){
+	LaunchedEffect(Unit) {
 		windowsInsets?.setIsNavigationBarsVisible(false)
 		windowsInsets?.setIsStatusBarsVisible(false)
 		windowsInsets?.setSystemBarsBehavior(SystemBarsBehavior.Immersive)
@@ -65,7 +65,7 @@ fun QPayApp(
 					modifier = Modifier.weight(1f),
 				) { childCreated ->
 					when (val child = childCreated.instance) {
-						is QPayRoot.DestinationChild.Splash -> {
+						is QPayRoot.MainDestinationChild.Splash -> {
 							SplashPage(
 								viewModel = child.component.splashViewModel,
 								onSplashFinished = { onboardedBefore ->
@@ -76,7 +76,7 @@ fun QPayApp(
 							)
 						}
 						
-						is QPayRoot.DestinationChild.Onboarding -> {
+						is QPayRoot.MainDestinationChild.Onboarding -> {
 							OnboardingPage(
 								onGetStarted = {
 									child.component.onOnboarded()
@@ -84,7 +84,7 @@ fun QPayApp(
 							)
 						}
 						
-						is QPayRoot.DestinationChild.SignInOptions -> {
+						is QPayRoot.MainDestinationChild.SignInOptions -> {
 							SignInOptionsPage(
 								onCreateAccount = {
 									child.component.onCreateAccountClicked()
@@ -95,10 +95,10 @@ fun QPayApp(
 							)
 						}
 						
-						is QPayRoot.DestinationChild.Login -> {
+						is QPayRoot.MainDestinationChild.Login -> {
 							LoginPage(
 								viewModel = child.component.loginViewModel,
-								onUserAuthenticated = {user, rememberMe ->
+								onUserAuthenticated = { user, rememberMe ->
 									child.component.onAuthenticationSuccess(
 										user = user,
 										rememberMe = rememberMe,
@@ -107,7 +107,7 @@ fun QPayApp(
 							)
 						}
 						
-						is QPayRoot.DestinationChild.ContactInfo -> {
+						is QPayRoot.MainDestinationChild.ContactInfo -> {
 							ContactPage(
 								viewModel = child.component.contactsViewModel,
 							) {
@@ -115,7 +115,7 @@ fun QPayApp(
 							}
 						}
 						
-						is QPayRoot.DestinationChild.PhoneVerification -> {
+						is QPayRoot.MainDestinationChild.PhoneVerification -> {
 							PhoneVerificationPage(
 								viewModel = child.component.verificationViewModel,
 							) {
@@ -123,7 +123,7 @@ fun QPayApp(
 							}
 						}
 						
-						is QPayRoot.DestinationChild.NationalIdCapture -> {
+						is QPayRoot.MainDestinationChild.NationalIdCapture -> {
 							NationalIDCapturePage(
 								viewModel = child.component.nationalIdViewModel,
 							) { front, back ->
@@ -131,7 +131,7 @@ fun QPayApp(
 							}
 						}
 						
-						is QPayRoot.DestinationChild.IdentifyVerification -> {
+						is QPayRoot.MainDestinationChild.IdentifyVerification -> {
 							IdentityVerificationPage(
 								viewModel = child.component.identityVerificationViewModel,
 								onStatusBarColorChangeRequest = {
@@ -143,7 +143,7 @@ fun QPayApp(
 							)
 						}
 						
-						is QPayRoot.DestinationChild.CreateAuthenticationPin -> {
+						is QPayRoot.MainDestinationChild.CreateAuthenticationPin -> {
 							CreateAuthenticationPage(
 								viewModel = child.component.createAuthenticateViewModel,
 								onAuthenticationCreated = {
@@ -152,11 +152,11 @@ fun QPayApp(
 							)
 						}
 						
-						is QPayRoot.DestinationChild.Home -> {
-							HomePage(
-								viewModel = child.component.homeViewModel,
-								onNavigateToSendMoney = {
-								
+						is QPayRoot.MainDestinationChild.BottomNavHolder -> {
+							BottomNavPage(
+								bottomNavComponent = child.component,
+								onNavigateToMainChild = {
+									child.component.onNavigateToMainChild(it)
 								}
 							)
 						}
