@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,8 @@ import androidx.compose.ui.unit.dp
 fun QPayOutlineButton(
 	modifier: Modifier = Modifier,
 	text: String,
+	textStyle: TextStyle = MaterialTheme.typography.titleSmall
+		.copy(fontWeight = FontWeight.SemiBold),
 	icon: Painter? = null,
 	contentColor: Color = MaterialTheme.colorScheme.primary,
 	onClick: () -> Unit,
@@ -71,8 +74,7 @@ fun QPayOutlineButton(
 		}
 		Text(
 			text = text,
-			style = MaterialTheme.typography.titleSmall
-				.copy(fontWeight = FontWeight.SemiBold),
+			style = textStyle,
 			color = contentColor
 		)
 	}

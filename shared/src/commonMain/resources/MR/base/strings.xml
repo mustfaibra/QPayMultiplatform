@@ -93,4 +93,6 @@
     <string name="pocket_message_subtitle"><![CDATA[You added SAR 780 to your saving pocket New Laptop & SAR 2000 to your saving pocket Car]]></string>
     <string name="pocket_saved">Pocket Saved</string>
     <string name="pocket_expenses">Pocket Expenses</string>
+    <string name="view_reports">View Reports</string>
+    <string name="new_pocket">New Pocket</string>
 </resources>
