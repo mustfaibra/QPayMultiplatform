@@ -16,8 +16,11 @@ Quick Pay - QPay for short - is a simple use case for a Fintech app for Onboardi
 <img src="https://github.com/mustfaibra/QPayMultiplatform/blob/master/screenshots/signinoptions.png" width="200px">
 <img src="https://github.com/mustfaibra/QPayMultiplatform/blob/master/screenshots/allowidcapture.png" width="200px">
 <img src="https://github.com/mustfaibra/QPayMultiplatform/blob/master/screenshots/confirmphoto.png" width="200px">
+<img src="https://github.com/mustfaibra/QPayMultiplatform/blob/master/screenshots/login.png" width="200px">
 <img src="https://github.com/mustfaibra/QPayMultiplatform/blob/master/screenshots/home.png" width="200">
-
+<img src="https://github.com/mustfaibra/QPayMultiplatform/blob/master/screenshots/wallet.png" width="200px">
+<img src="https://github.com/mustfaibra/QPayMultiplatform/blob/master/screenshots/qrpage.png" width="200px">
+<img src="https://github.com/mustfaibra/QPayMultiplatform/blob/master/screenshots/pocket.png" width="200px">
 
 ## Tech & Libs Used Until Now
 
@@ -25,7 +28,9 @@ The project used the following:
 
 - Kotlin Programming Language
 - [Compose Mutliplatform](https://github.com/JetBrains/compose-multiplatform) Framework
-- [Decompose](https://arkivanov.github.io/Decompose/) for State's Management, thanks [Arkadii](https://github.com/arkivanov)
+- [Decompose](https://arkivanov.github.io/Decompose/) for State's Management and Navigation, thanks [Arkadii](https://github.com/arkivanov)
+    - Stack navigation for the main navigation system.
+    - Pages Navigation for the Bottom Nav.
 - [Moko Resources](https://github.com/icerockdev/moko-resources) for sharing resources & handling painters on both platforms.
 - [Koin](https://insert-koin.io) for handling dependency Injection on Mutliplatform.
 - [Kotlinx Datetime](https://github.com/Kotlin/kotlinx-datetime) for Mutliplatform
@@ -51,7 +56,6 @@ The remaining screens appears on the app UI design on the shared Behance link on
 The following features is coming, feel free to contribute!
 
  - Camera For Capturing ID and Identity Verification : Currently the app is asking for Camera permission successfully on both platforms, but the camera feature itself is not implemented yet.
- - Login Screen for exited users.
  - QR Code Scanner to support Scan To Send Money for both Android & iOS.
 
 
