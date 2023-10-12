@@ -55,9 +55,11 @@ The remaining screens appears on the app UI design on the shared Behance link on
 
 The following features is coming, feel free to contribute!
 
+ - The Profile and other remaining screens.
  - Camera For Capturing ID and Identity Verification : Currently the app is asking for Camera permission successfully on both platforms, but the camera feature itself is not implemented yet.
  - QR Code Scanner to support Scan To Send Money for both Android & iOS.
-
+ - Building an Encryption Handler that work on both platforms, as there is no efficient one till now(AFAIK).
+ - Implementing Lottie Animations Component for both platforms.
 
 ## Final words!
 
